@@ -1,9 +1,8 @@
-import java.io.BufferedInputStream;
+import java.io.*;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 public class Server
 {
@@ -56,34 +55,34 @@ public class Server
 
 	public static void retrieveData(Socket socket)
 	{
-		BufferedInputStream bufferedInputStream;
-		ObjectInputStream objectInputStream;
-		FilesSerializable filesSerializable = new FilesSerializable();
+		DataInputStream dataInputStream;
+		int messageSize;
+		ByteBuffer byteBuffer;
 
 		System.out.println("New Client Connection: " + socket.getInetAddress().toString() + ":" + socket.getPort());
 		
 		try
 		{
-			bufferedInputStream = new BufferedInputStream(socket.getInputStream());
-			objectInputStream = new ObjectInputStream(bufferedInputStream);
+			dataInputStream = new DataInputStream(socket.getInputStream());
+			messageSize = dataInputStream.readInt();
+			byteBuffer = ByteBuffer.allocate(messageSize);
 
-			filesSerializable = (FilesSerializable)objectInputStream.readObject();
+			for(int i = 0; i < messageSize; i++)
+			{
+				byteBuffer.put(dataInputStream.readByte());
+			}
+
+			System.out.print("Message size: " + messageSize);
+			System.out.print(byteBuffer.array());
+
+
+			dataInputStream.close();
+
 		}
 		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-		catch(ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-
-
-		for(String fileName : filesSerializable.fileNames)
-		{
-			System.out.println(fileName);
-		}
-
 
 	}
 }
