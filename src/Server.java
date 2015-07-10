@@ -58,6 +58,7 @@ public class Server
 		DataInputStream dataInputStream;
 		int messageSize;
 		ByteBuffer byteBuffer;
+		FilesSerializable filesSerializable;
 
 		System.out.println("New Client Connection: " + socket.getInetAddress().toString() + ":" + socket.getPort());
 		
@@ -72,8 +73,9 @@ public class Server
 				byteBuffer.put(dataInputStream.readByte());
 			}
 
+			filesSerializable = new FilesSerializable(byteBuffer);
+
 			System.out.print("Message size: " + messageSize);
-			System.out.print(byteBuffer.array());
 
 
 			dataInputStream.close();
