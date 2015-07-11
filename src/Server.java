@@ -84,8 +84,7 @@ public class Server
 
 			filesSerializable = new FilesSerializable(byteBuffer);
 
-			Random random = new Random();
-			filesSerializable.saveFiles("\\images\\" + socket.getInetAddress().toString().replace(".", "") + random.nextInt());
+			filesSerializable.saveFiles("\\images\\" + socket.getInetAddress().toString().replace(".", "") + (int)System.currentTimeMillis());
 
 			dataInputStream.close();
 
