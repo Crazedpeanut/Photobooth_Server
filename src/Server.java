@@ -73,10 +73,15 @@ public class Server
 				byteBuffer.put(dataInputStream.readByte());
 			}
 
+			System.out.println(String.format("Message size: %d", messageSize));
+			System.out.println(String.format("Byte buffer pos: %d", byteBuffer.position()));
+
+			byteBuffer.position(0); //Put byte buffer pos back to the start
+
+			System.out.println(String.format("Setting Byte buffer pos to: %d", byteBuffer.position()));
+
 			filesSerializable = new FilesSerializable(byteBuffer);
-
-			System.out.print("Message size: " + messageSize);
-
+			filesSerializable.saveFiles(socket.getInetAddress().toString());
 
 			dataInputStream.close();
 
@@ -85,6 +90,5 @@ public class Server
 		{
 			e.printStackTrace();
 		}
-
 	}
 }
