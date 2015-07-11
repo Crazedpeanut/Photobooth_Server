@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Random;
 
 public class Server
 {
@@ -30,6 +31,7 @@ public class Server
 		while(keepRunning)
 		{
 			Socket socket;
+
 			try 
 			{
 				socket = server.accept();
@@ -81,7 +83,9 @@ public class Server
 			System.out.println(String.format("Setting Byte buffer pos to: %d", byteBuffer.position()));
 
 			filesSerializable = new FilesSerializable(byteBuffer);
-			filesSerializable.saveFiles(socket.getInetAddress().toString());
+
+			Random random = new Random();
+			filesSerializable.saveFiles("\\images\\" + socket.getInetAddress().toString().replace(".", "") + random.nextInt());
 
 			dataInputStream.close();
 
